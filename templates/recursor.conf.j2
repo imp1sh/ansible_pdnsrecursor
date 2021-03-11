@@ -501,6 +501,9 @@ local-port=5353
 # query-local-address6	Source IPv6 address for sending queries. IF UNSET, IPv6 WILL NOT BE USED FOR OUTGOING QUERIES
 #
 # query-local-address6=
+{% if pdnsrec_queryip6 is defined %}
+query-local-address6={{ pdnsrec_queryip6 }}
+{% endif %}
 
 #################################
 # quiet	Suppress logging of questions and answers
@@ -716,16 +719,19 @@ setuid=recursor
 # webserver	Start a webserver (for REST API)
 #
 # webserver=no
+webserver={{ pdnsrec_webenable | default('no', true) }}
 
 #################################
 # webserver-address	IP Address of webserver to listen on
 #
 # webserver-address=127.0.0.1
+webserver-address={{ pdnsrec_webip | default('127.0.0.1', true) }}
 
 #################################
 # webserver-allow-from	Webserver access is only allowed from these subnets
 #
 # webserver-allow-from=127.0.0.1,::1
+webserver-allow-from={{ pdnsrec_weballowfrom | default('127.0.0.1,::1', true) }}
 
 #################################
 # webserver-loglevel	Amount of logging in the webserver (none, normal, detailed)
@@ -736,11 +742,15 @@ setuid=recursor
 # webserver-password	Password required for accessing the webserver
 #
 # webserver-password=
+{% if pdnsrec_webpass is defined %}
+webserver-password={{ pdnsrec_webpass }}
+{% endif %}
 
 #################################
 # webserver-port	Port of webserver to listen on
 #
 # webserver-port=8082
+webserver-port={{ pdnsrec_webport | default('8082', true) }}
 
 #################################
 # write-pid	Write a PID file
